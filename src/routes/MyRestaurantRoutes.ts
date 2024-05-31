@@ -1,7 +1,7 @@
 import express from "express";
 import multer from "multer";
 import MyRestaurantController from "../Controller/MyRestaurantController";
-import { jwtCheck, jwtPare } from "../middleware/auth";
+import { jwtCheck, jwtParse } from "../middleware/auth";
 import { validateMyRestaurant } from "../middleware/validation";
 
 const router = express.Router();
@@ -14,8 +14,24 @@ const upload = multer({
   },
 });
 
+//PATCH /a
+router.patch(
+  "/order/:orderId/status",
+  jwtCheck,
+  jwtParse,
+  MyRestaurantController.updateOrderStatus
+);
+
+// GET /api/my/restaurant/order
+router.get(
+  "/order",
+  jwtCheck,
+  jwtParse,
+  MyRestaurantController.getMyRestaurantOrders
+);
+
 //GET /api/my/restaurant
-router.get("/", jwtCheck, jwtPare, MyRestaurantController.getMyRestaurant);
+router.get("/", jwtCheck, jwtParse, MyRestaurantController.getMyRestaurant);
 
 //POST /api/my/restaurant
 router.post(
@@ -23,7 +39,7 @@ router.post(
   upload.single("imageFile"),
   validateMyRestaurant,
   jwtCheck,
-  jwtPare,
+  jwtParse,
   MyRestaurantController.createMyRestaurant
 );
 
@@ -33,7 +49,7 @@ router.put(
   upload.single("imageFile"),
   validateMyRestaurant,
   jwtCheck,
-  jwtPare,
+  jwtParse,
   MyRestaurantController.updateMyRestaurant
 );
 

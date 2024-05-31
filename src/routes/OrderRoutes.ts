@@ -1,13 +1,15 @@
 import express from "express";
-import { jwtCheck, jwtPare } from "../middleware/auth";
+import { jwtCheck, jwtParse } from "../middleware/auth";
 import OrderController from "../Controller/OrderController";
 
 const router = express.Router();
 
+router.get("/", jwtCheck, jwtParse, OrderController.getMyOrder);
+
 router.post(
   "/checkout/create-checkout-session",
   jwtCheck,
-  jwtPare,
+  jwtParse,
   OrderController.createCheckoutSession
 );
 
